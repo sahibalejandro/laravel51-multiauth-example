@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,17 +10,35 @@
 |
 */
 
-use Illuminate\Support\Facades\Auth;
+/*
+ * User section
+ */
+Route::group(array('prefix' => 'user'), function(){
 
-Route::group(['prefix' => 'admin'], function () {
+    //Unauthenticated routes
+    Route::get('login', array('uses' => 'Auth\UserAuthController@getLogin'));
+    Route::post('login', array('uses' => 'Auth\UserAuthController@postLogin'));
 
-    Route::get('login', 'Auth\AuthController@getLogin');
-    Route::post('login', 'Auth\AuthController@postLogin');
+    //Authenticated routes
+    Route::group(array('middleware' => 'auth.user'), function(){
+        Route::get('/home', array('as' => 'user.home', 'uses' => 'UserHomeController@index'));
+        Route::get('/logout', array('as' => 'user.logout', 'uses' => 'Auth\UserAuthController@getLogout'));
+    });
+});
 
-    Route::group(['middleware' => 'auth'], function () {
-        Route::get('/', function () {
-            return 'Welcome '. Auth::admin()->get()->name;
-        });
+/*
+ * Admin section
+ */
+Route::group(['prefix' => 'admin'], function(){
+
+    //Unauthenticated routes
+    Route::get('login', array('uses' => 'Auth\AdminAuthController@getLogin'));
+    Route::post('login', array('uses' => 'Auth\AdminAuthController@postLogin'));
+
+    //Authenticated routes
+    Route::group(array('middleware' => 'auth.admin'), function(){
+        Route::get('/home', array('as' => 'admin.home', 'uses' => 'AdminHomeController@index'));
+        Route::get('/logout', array('as' =>'admin.logout', 'uses' => 'Auth\AdminAuthController@getLogout'));
     });
 
 });

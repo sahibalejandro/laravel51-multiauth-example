@@ -46,8 +46,12 @@ return [
     'multi' => [
         'admin' => [
             'driver' => 'eloquent',
-            'model' => 'App\User',
+            'model' => 'App\Admin',
         ],
+        'user' => [
+            'driver' => 'eloquent',
+            'model' => 'App\User',
+        ]
     ],
 
     /*

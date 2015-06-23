@@ -20,11 +20,18 @@ class Admin extends Model implements AuthenticatableContract, CanResetPasswordCo
     protected $table = 'admins';
 
     /**
+     * The model primary key
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['email', 'password', 'firstname', 'lastname','status'];
 
     /**
      * The attributes excluded from the model's JSON form.
